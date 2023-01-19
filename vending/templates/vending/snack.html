@@ -1,0 +1,16 @@
+{% extends 'vending/base.html' %}
+{% block title %} Vending Machine & Snack Creation {% endblock %}
+
+{% block content %}
+    <h3>Create Vending Machine</h3>
+    <form method="post" action="/create/" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            {{ form.as_p }}
+            <div class="input-group-append">
+                <button type="submit" name="save" class="btn btn-success">Create</button>
+            </div>
+
+        </div>
+    </form>
+{% endblock %}
