@@ -1,6 +1,24 @@
 {% extends 'vending/base.html' %}
 
 {% block content %}
-    <h3>Home</h3>
+<h3>Home</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Location</th>
+        <th scope="col">Balance</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for vm in allVM %}
+    <tr>
+            <td><a href="{{ vm.location }}">{{ vm.location }}</a></td>
+            <td>{{ vm.balance }}</td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
 
 {% endblock %}

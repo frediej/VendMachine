@@ -1,0 +1,14 @@
+{% extends 'vending/base.html' %}
+{% block content %}
+<h3>Purchase</h3>
+<select class="form-select" aria-label="Vending Machine Selection">
+    {% for v in vm %}
+        <option value="{{ v.location }}">{{ v.location }}</option>
+    {% endfor %}
+</select>
+<select class="form-select" aria-label="Snack Selection">
+    {% for snack in snacks %}
+        <option value="{{ snack.name }}">{{ snack.name }}</option>
+    {% endfor %}
+</select>
+{% endblock %}

@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("<str:loc>", views.index, name="index"),
     path("create/", views.create, name="create"),
+    path("transaction/", views.transaction, name="transaction"),
 
 
 ]

@@ -1,41 +1,51 @@
 {% extends "vending/base.html" %}
 {% block content %}
-    <h2>Location: {{ vm.location }}</h2>
-    <h3>Stock</h3>
-    <form method="post" action="#">
-        {% csrf_token %}
-        {% for item in vm.snacks_set.all %}
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    {% if item.quantity != 0 %}
-                        <div class="container">
-                            <button type="submit" name="editSnack" class="btn btn-outline-primary">Edit
-                            </button>
-                        </div>
-                    {% endif %}
-                </div>
-                <input type="text" name="snackName" value="{{ item.name }}" class="form-control">
-                <input type="number" name="snackPrice" value="{{ item.price }}" class="form-control">
-                <input type="number" name="snackQuant" value="{{ item.quantity }}" class="form-control">
-            </div>
-        {% endfor %}
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <input type="number" name="balance" placeholder="Current balance: {{ vm.balance }}">
-                <button type="submit" name="editBalance" value="editBalance" class="btn btn-outline-primary">Edit
-                    Balance
-                </button>
-            </div>
-        </div>
+<h2>Location: {{ vm.location }}</h2>
+<h3>Stock</h3>
+<form method="post" action="#">
+    {% csrf_token %}
+    {% for item in stock %}
     <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <input type="text" name="name" placeholder="Snack Name">
-                <input type="number" name="price" placeholder="Snack Price">
-                <input type="number" name="quantity" placeholder="Quantity to be added">
-                <button type="submit" name="newSnack" value="newSnack" class="btn btn-outline-primary">Add Snack
+        <div class="input-group-prepend">
+            {% if item.stock != 0 %}
+            <div class="container">
+                <button type="submit" name="editSnack" class="btn btn-outline-primary">Edit
                 </button>
-                <br>
+                <li> Name: {{item.snacks.name}} Price: {{item.snacks.price}} Stock: {{item.stock}}</li>
             </div>
+            {% endif %}
         </div>
-    </form>
+    </div>
+    {% endfor %}
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <input type="number" name="balance" placeholder="Current balance: {{ vm.balance }}">
+            <button type="submit" name="editBalance" value="editBalance" class="btn btn-outline-primary">Edit
+                Balance
+            </button>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <input type="text" name="name" placeholder="Snack Name">
+            <input type="number" name="price" placeholder="Snack Price">
+            <input type="number" name="quantity" placeholder="Quantity to be added">
+            <button type="submit" name="newSnack" value="newSnack" class="btn btn-outline-primary">Add Snack
+            </button>
+            <br>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <select class="form-select" aria-label="Snack Selection">
+                {% for snack in snacks %}
+                <option value="{{ snack.name }}">{{ snack.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="newSnack" value="newSnack" class="btn btn-outline-primary">Add Snack
+            </button>
+            <br>
+        </div>
+    </div>
+</form>
 {% endblock %}
