@@ -6,14 +6,12 @@
     <thead>
     <tr>
         <th scope="col">Location</th>
-        <th scope="col">Balance</th>
     </tr>
     </thead>
     <tbody>
     {% for vm in allVM %}
     <tr>
         <td><a href="{{ vm.location }}">{{ vm.location }}</a></td>
-        <td>{{ vm.balance }}</td>
 
     </tr>
     {% endfor %}
@@ -40,6 +38,8 @@
     {% endfor %}
     </tbody>
 </table>
-<button type="submit" name="editStock" class="btn btn-info">Edit Stock</button>
+<button type="submit" name="editStock" onclick="location.href='/stock/'"class="btn btn-info">Edit Stock</button>
+    <button type="submit" class="btn btn-danger" onclick="location.href='/deleteVM/{{ vm.id }}/'">Delete Vending Machine</button>
+
 
 {% endblock %}

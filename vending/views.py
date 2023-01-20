@@ -125,6 +125,9 @@ def createSnack(response):
 
 
 def stock(response):
+    if response.method == "GET":
+        snacks = Snacks.objects.all()
+        return render(response, "vending/stock.html", {"snacks": snacks})
     if response.method == "POST":
         if response.POST.get("createSnack"):
             name = response.POST.get("snackName")
