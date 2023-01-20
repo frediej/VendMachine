@@ -145,17 +145,19 @@ def stock(response):
     return render(response, "vending/stock.html", {"snacks": snacks})
 
 
-#delete button on stock page
+# delete button on stock page
 def deleteSnack(request, snackId):
     snack = Snacks.objects.get(id=snackId)
     snack.delete()
-    return HttpResponseRedirect("/stock")
+    return stock(request)
 
-def deleteVM(request, vmId):
+
+def deleteVM(request, vmID):
     print("deleting vm")
-    vm = VendingMachine.objects.get(id=vmId)
+    vm = VendingMachine.objects.get(id=vmID)
     vm.delete()
     return HttpResponseRedirect("/")
+
 
 # purchase button on vending machine page
 def purchaseSnack(request, vmID, snackId):

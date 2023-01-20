@@ -50,9 +50,11 @@
 </div>
 
 <div>
-    <button type="submit" class="btn btn-danger" onclick="location.href='/deleteVM/{{ vm.id }}/'">Delete Vending
-        Machine
-    </button>
+    <a href="/deleteVM/{{vm.id}}">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you Sure?');">Delete Vending
+            Machine
+        </button>
+    </a>
 </div>
 
 <h3>Available Snacks for Restock</h3>
