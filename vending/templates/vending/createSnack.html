@@ -1,0 +1,34 @@
+{% extends 'vending/base.html' %}
+{% block title %} Snack Creation {% endblock %}
+
+{% block content %}
+<h3>Current Stock</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for snack in snacks %}
+    <tr>
+        <td>{{ snack.name }}</td>
+        <td>{{ snack.price }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<h3>Create Snacks</h3>
+<p>Warning: You may only create snacks that don't currently exist</p>
+<form method="post" action="/createSnack/" class="form-group">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        {{ form.as_p }}
+        <div class="input-group-append">
+            <button type="submit" name="save" class="btn btn-success">Create</button>
+        </div>
+
+    </div>
+</form>
+{% endblock %}

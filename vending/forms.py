@@ -11,4 +11,3 @@ class CreateSnack(forms.Form):
     price = forms.IntegerField(label="Price")
     quantity = forms.IntegerField(label="Quantity")
 
-

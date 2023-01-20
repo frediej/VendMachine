@@ -1,0 +1,54 @@
+{% extends 'vending/base.html' %}
+{% block title %} Vending Machine & Snack Creation {% endblock %}
+
+{% block content %}
+    <h3>Current Stock</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Total Stock</th>
+            <th scope="col">Available Stock</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for snack in snacks %}
+        <tr>
+            <td>{{ snack.name }}</td>
+            <td>{{ snack.price }}</td>
+            <td>{{ snack.totalQuantity }}</td>
+            <td>{{ snack.availableQuantity }}</td>
+            <td><a href="/deleteSnack/{{ snack.id }}">Delete</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+<div class="createSnack">
+    <form method="post" , action="#" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" name="snackName" placeholder="Snack Name">
+            <input type="text" name="snackPrice" placeholder="Snack Price">
+            <input type="number" name="snackQty" placeholder="Quantity to be added">
+            <button type="submit" name="createSnack" value="createSnack" class="btn btn-outline-primary">Create Snack
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="editSnack">
+    <form method="post" , action="#" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" name="snackName" placeholder="Snack Name">
+            <input type="text" name="snackPrice" placeholder="Snack Price">
+            <input type="number" name="editStock" placeholder="(+) to add/(-) to subtract">
+            <button type="submit" name="editSnack" value="editSnack" class="btn btn-outline-primary">Edit Snack
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

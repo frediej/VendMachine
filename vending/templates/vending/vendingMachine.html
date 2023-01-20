@@ -2,50 +2,82 @@
 {% block content %}
 <h2>Location: {{ vm.location }}</h2>
 <h3>Stock</h3>
-<form method="post" action="#">
-    {% csrf_token %}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Price</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Purchase</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for item in stock %}
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            {% if item.stock != 0 %}
-            <div class="container">
-                <button type="submit" name="editSnack" class="btn btn-outline-primary">Edit
-                </button>
-                <li> Name: {{item.snacks.name}} Price: {{item.snacks.price}} Stock: {{item.stock}}</li>
-            </div>
-            {% endif %}
-        </div>
-    </div>
+    {% if item.stock != 0 %}
+    <tr>
+        <td>{{ item.snacks.name }}</td>
+        <td>{{ item.snacks.price }}</td>
+        <td>{{ item.stock }}</td>
+        <td><a href="/purchaseSnack/{{ vm.id }}/{{ item.snacks.id }}/">Buy</a></td>
+    </tr>
+    {% endif %}
     {% endfor %}
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <input type="number" name="balance" placeholder="Current balance: {{ vm.balance }}">
-            <button type="submit" name="editBalance" value="editBalance" class="btn btn-outline-primary">Edit
-                Balance
+    </tbody>
+</table>
+
+<div class="addSnack">
+    <form method="post" , action="#" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" name="snackName" placeholder="Snack Name">
+            <input type="number" name="snackQty" placeholder="Quantity to be added">
+            <button type="submit" name="addSnack" value="newSnack" class="btn btn-outline-primary">Add Snack
             </button>
         </div>
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <input type="text" name="name" placeholder="Snack Name">
-            <input type="number" name="price" placeholder="Snack Price">
-            <input type="number" name="quantity" placeholder="Quantity to be added">
-            <button type="submit" name="newSnack" value="newSnack" class="btn btn-outline-primary">Add Snack
+    </form>
+</div>
+
+<div class="editStock">
+    <form method="post" , action="#" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" name="snackName" placeholder="Snack Name">
+            <input type="number" name="snackQty" placeholder="Quantity to be added">
+            <button type="submit" name="editStock" value="editStock" class="btn btn-outline-primary">Edit Stock
             </button>
-            <br>
         </div>
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <select class="form-select" aria-label="Snack Selection">
-                {% for snack in snacks %}
-                <option value="{{ snack.name }}">{{ snack.name }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" name="newSnack" value="newSnack" class="btn btn-outline-primary">Add Snack
+    </form>
+</div>
+
+<div class="delete">
+    <form method="delete" , action="#" class="form-group">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" name="vmName" placeholder="Input VM name to confirm deletion">
+            <button type="submit" name="deleteVM" value="deleteVM" class="btn-danger">Delete Vending Machine
             </button>
-            <br>
         </div>
-    </div>
-</form>
-{% endblock %}
+    </form>
+</div>
+<div>
+    <button type="submit" class="btn btn-danger" onclick="location.href='/deleteVM/{{ vm.id }}/'">Delete Vending Machine</button>
+</div>
+
+<h3>Available Snacks for Restock</h3>
+<table class="table table-striped">
+    <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Price</th>
+        <th scope="col">Stock</th>
+    </tr>
+    {% for snack in snacks %}
+    {% if snack.stock != 0 %}
+    <tr>
+        <td>{{ snack.name }}</td>
+        <td>{{ snack.price }}</td>
+        <td>{{ snack.availableQuantity }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+    {% endblock %}

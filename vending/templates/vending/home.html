@@ -1,7 +1,7 @@
 {% extends 'vending/base.html' %}
 
 {% block content %}
-<h3>Home</h3>
+<h3>Current Vending Machines</h3>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -12,13 +12,34 @@
     <tbody>
     {% for vm in allVM %}
     <tr>
-            <td><a href="{{ vm.location }}">{{ vm.location }}</a></td>
-            <td>{{ vm.balance }}</td>
+        <td><a href="{{ vm.location }}">{{ vm.location }}</a></td>
+        <td>{{ vm.balance }}</td>
 
     </tr>
     {% endfor %}
     </tbody>
 </table>
-
+<h3>Current Stock</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total Stock</th>
+        <th scope="col">Available Stock</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for snack in snacks %}
+    <tr>
+        <td>{{ snack.name }}</td>
+        <td>{{ snack.price }}</td>
+        <td>{{ snack.totalQuantity }}</td>
+        <td>{{ snack.availableQuantity }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<button type="submit" name="editStock" class="btn btn-info">Edit Stock</button>
 
 {% endblock %}
