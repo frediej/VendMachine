@@ -97,9 +97,9 @@ def createVM(response):
         form = CreateVendingMachine(response.POST)
         if form.is_valid():
             loc = form.cleaned_data["location"]
-            b = form.cleaned_data["balance"]
-            new_vm = VendingMachine(location=loc, balance=b)
-            new_vm.save()
+            if VendingMachine.objects.filter(location=loc).count() == 0:
+                new_vm = VendingMachine(location=loc)
+                new_vm.save()
         return HttpResponseRedirect("/%s" % new_vm.location)
     else:
         form = CreateVendingMachine()
@@ -108,6 +108,9 @@ def createVM(response):
 
 # creates snacks
 def createSnack(response):
+    if response.method == "GET":
+        stock = Snacks.objects.all()
+        return render(response, "vending/createSnack.html", {"snacks": stock})
     if response.method == "POST":
         form = CreateSnack(response.POST)
         if form.is_valid():
@@ -126,8 +129,8 @@ def createSnack(response):
 
 def stock(response):
     if response.method == "GET":
-        snacks = Snacks.objects.all()
-        return render(response, "vending/stock.html", {"snacks": snacks})
+        stock = Snacks.objects.all()
+        return render(response, "vending/stock.html", {"snacks": stock})
     if response.method == "POST":
         if response.POST.get("createSnack"):
             name = response.POST.get("snackName")
