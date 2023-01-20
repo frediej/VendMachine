@@ -65,22 +65,6 @@ def index(response, loc):
                 snack.save()
                 vm.save()
                 return render(response, "vending/vendingMachine.html", {"vm": vm, "stock": stock, "snacks": snacks})
-
-        # Delete vending machine we are in
-        elif response.DELETE.get("deleteVM"):
-            print("deleting vm")
-            vmName = response.DELETE.get("vmName")
-            if vmName == vm.location:
-                print("names match")
-                for s in stock:
-                    snack = snacks.get(id=s.snacks.id)
-                    print(snack)
-                    snack.availableQuantity += int(s.stock)
-                    snack.save()
-
-                vm.delete()
-            print("names didnt match")
-            return render(response, "vending/home.html", {"allVM": VendingMachine.objects.all(), "snacks": snacks})
         else:
             return render(response, "vending/pageNotFound.html", {})
     # return render(response, "vending/vendingMachine.html", {"vm": vm, "stock": stock, "snacks": snacks})
