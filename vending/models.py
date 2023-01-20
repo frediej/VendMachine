@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class VendingMachine(models.Model):
@@ -8,6 +9,7 @@ class VendingMachine(models.Model):
     def __str__(self):
         return self.location
 
+
 class Snacks(models.Model):
     # vending_machine = models.ForeignKey(VendingMachine, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
@@ -15,9 +17,9 @@ class Snacks(models.Model):
     totalQuantity = models.IntegerField()
     availableQuantity = models.IntegerField(default=0)
 
-
     def __str__(self):
         return self.name
+
 
 class Stock(models.Model):
     vendingMachine = models.ForeignKey(VendingMachine, on_delete=models.CASCADE)

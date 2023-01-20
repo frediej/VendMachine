@@ -2,29 +2,29 @@
 {% block title %} Vending Machine & Snack Creation {% endblock %}
 
 {% block content %}
-    <h3>Current Stock</h3>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Total Stock</th>
-            <th scope="col">Available Stock</th>
-            <th scope="col">Delete</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for snack in snacks %}
-        <tr>
-            <td>{{ snack.name }}</td>
-            <td>{{ snack.price }}</td>
-            <td>{{ snack.totalQuantity }}</td>
-            <td>{{ snack.availableQuantity }}</td>
-            <td><a href="/deleteSnack/{{ snack.id }}">Delete</a></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<h3>Current Stock</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total Stock</th>
+        <th scope="col">Available Stock</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for snack in snacks %}
+    <tr>
+        <td>{{ snack.name }}</td>
+        <td>{{ snack.price }}</td>
+        <td>{{ snack.totalQuantity }}</td>
+        <td>{{ snack.availableQuantity }}</td>
+        <td><a href="/deleteSnack/{{ snack.id }}">Delete</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 <div class="createSnack">
     <form method="post" , action="#" class="form-group">

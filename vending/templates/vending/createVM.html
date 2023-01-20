@@ -2,15 +2,15 @@
 {% block title %} Vending Machine {% endblock %}
 
 {% block content %}
-    <h3>Create Vending Machine</h3>
-    <form method="post" action="/createVM/" class="form-group">
-        {% csrf_token %}
-        <div class="input-group mb-3">
-            {{ form.as_p }}
-            <div class="input-group-append">
-                <button type="submit" name="save" class="btn btn-success">Create</button>
-            </div>
-
+<h3>Create Vending Machine</h3>
+<form method="post" action="/createVM/" class="form-group">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+        {{ form.as_p }}
+        <div class="input-group-append">
+            <button type="submit" name="save" class="btn btn-success">Create</button>
         </div>
-    </form>
+
+    </div>
+</form>
 {% endblock %}
