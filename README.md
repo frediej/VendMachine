@@ -1,5 +1,6 @@
-This is the first assignment for ICCS372: Software Engineering
-I utilized Django to develop my Vending Machine management system. To run it, enter the repository that contains the manage.py file via the terminal. Once here, run "python manage.py runserver" and access the server by utilizing the url "http:127.0.0.0:8000". Functionality goes as follows:
+This is the first assignment for ICCS372: Software Engineering.
+
+I utilized Django to develop my Vending Machine management system. To run it, enter the directory that contains the manage.py file via the terminal. Once here, run "python manage.py runserver" and access the server by utilizing the url "http:127.0.0.0:8000". Functionality goes as follows:
 
 ----------------------Home-----------------------------
 The Home Page contains a table that presents all of the existing Vending Machines. The Vending Machine names are clickable links that upon clicking forwards you to the Vending Machine's page. 
