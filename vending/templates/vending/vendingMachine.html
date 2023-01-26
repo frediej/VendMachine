@@ -9,6 +9,7 @@
         <th scope="col">Price</th>
         <th scope="col">Stock</th>
         <th scope="col">Purchase</th>
+        <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <td>{{ item.snacks.price }}</td>
         <td>{{ item.stock }}</td>
         <td><a href="/purchaseSnack/{{ vm.id }}/{{ item.snacks.id }}/">Buy</a></td>
+        <td><a href="/deleteSnack/{{ vm.id }}/{{ item.snacks.id }}/">Delete</a></td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -26,7 +28,7 @@
 </table>
 
 <div class="addSnack">
-    <form method="post" , action="#" class="form-group">
+    <form method="post" , action="/add_snack_to_vm/{{ vm.id}}" class="form-group">
         {% csrf_token %}
         <div class="input-group mb-3">
             <input type="text" name="snackName" placeholder="Snack Name">
@@ -38,7 +40,7 @@
 </div>
 
 <div class="editStock">
-    <form method="post" , action="#" class="form-group">
+    <form method="post" , action="/edit_stock_vm/{{ vm.id }}" class="form-group">
         {% csrf_token %}
         <div class="input-group mb-3">
             <input type="text" name="snackName" placeholder="Snack Name">

@@ -20,14 +20,14 @@
         <td>{{ snack.price }}</td>
         <td>{{ snack.totalQuantity }}</td>
         <td>{{ snack.availableQuantity }}</td>
-        <td><a href="/deleteSnack/{{ snack.id }}">Delete</a></td>
+        <td><a href="/deleteStock/{{ snack.id }}">Delete</a></td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
 
 <div class="createSnack">
-    <form method="post" , action="#" class="form-group">
+    <form method="post" , action="/create_snack/" class="form-group">
         {% csrf_token %}
         <div class="input-group mb-3">
             <input type="text" name="snackName" placeholder="Snack Name">
@@ -40,7 +40,7 @@
 </div>
 
 <div class="editSnack">
-    <form method="post" , action="#" class="form-group">
+    <form method="post" , action="/edit_stock/" class="form-group">
         {% csrf_token %}
         <div class="input-group mb-3">
             <input type="text" name="snackName" placeholder="Snack Name">

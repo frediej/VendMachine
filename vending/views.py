@@ -16,8 +16,9 @@ def get_range(value):
 snacks = Snacks.objects.all()
 
 
-# Index is the main page for each vending machine
-def index(response, loc):
+# =================================View Pages ================================
+
+def vending_machine(response, loc):
     if VendingMachine.objects.filter(location=loc).count() == 0:
         return render(response, "vending/pageNotFound.html", {})
     vm = VendingMachine.objects.get(location=loc)
@@ -26,57 +27,25 @@ def index(response, loc):
 
     if response.method == "GET":
         return render(response, "vending/vendingMachine.html", {"vm": vm, "stock": stock, "snacks": snacks})
-    # if adding a new snack for the vending machine
 
-    if response.method == "POST":
-
-        # add snack to vending machine
-        if response.POST.get("addSnack"):
-            snackName = response.POST.get("snackName")
-            qty = response.POST.get("snackQty")
-            snack = Snacks.objects.get(name=snackName)
-            if stock.filter(snacks=snack).count() != 0:
-                changeStock = Stock.objects.get(snacks=snack)
-                if int(snack.availableQuantity) >= int(qty) + int(changeStock.stock):
-                    changeStock.stock = int(changeStock.stock) + int(qty)
-                    snack.availableQuantity = int(snack.availableQuantity) - int(qty)
-                    changeStock.save()
-                    snack.save()
-                    vm.save()
-                    return HttpResponseRedirect("/%s" % loc)
-            elif int(snack.availableQuantity) >= int(qty):
-                newStock = Stock(vendingMachine=vm, snacks=snack, stock=qty)
-                snack.availableQuantity = int(snack.availableQuantity) - int(qty)
-                newStock.save()
-                snack.save()
-                vm.save()
-                return render(response, "vending/vendingMachine.html", {"vm": vm, "stock": stock, "snacks": snacks})
-
-        # Edit stock in vending machine, simply replaces the stock
-        elif response.POST.get("editStock"):
-            snackName = response.POST.get("snackName")
-            qty = response.POST.get("snackQty")
-            snack = Snacks.objects.get(name=snackName)
-            changeStock = Stock.objects.get(snacks=snack)
-            if int(snack.availableQuantity) >= int(qty):
-                snack.availableQuantity = int(snack.availableQuantity) - int(qty) + int(changeStock.stock)
-                changeStock.stock = int(qty)
-                changeStock.save()
-                snack.save()
-                vm.save()
-                return render(response, "vending/vendingMachine.html", {"vm": vm, "stock": stock, "snacks": snacks})
-        else:
-            return render(response, "vending/pageNotFound.html", {})
-    # return render(response, "vending/vendingMachine.html", {"vm": vm, "stock": stock, "snacks": snacks})
+    return render(response, "vending/vendingMachine.html", {"vm": vm, "stock": stock, "snacks": snacks})
 
 
 def home(response):
-    allVM = VendingMachine.objects.all()
-    return render(response, "vending/home.html", {"allVM": allVM, "snacks": snacks})
+    all_vm = VendingMachine.objects.all()
+    return render(response, "vending/home.html", {"allVM": all_vm, "snacks": snacks})
 
 
-# creates vending machines
-def createVM(response):
+def stock(response):
+    if response.method == "GET":
+        stock = Snacks.objects.all()
+        return render(response, "vending/stock.html", {"snacks": stock})
+    return render(response, "vending/stock.html", {"snacks": snacks})
+
+
+# ==================================Create apis=============================
+
+def create_vm(response):
     if response.method == "POST":
         form = CreateVendingMachine(response.POST)
         if form.is_valid():
@@ -90,83 +59,115 @@ def createVM(response):
     return render(response, "vending/createVM.html", {"form": form})
 
 
-# creates snacks
-def createSnack(response):
-    if response.method == "GET":
-        stock = Snacks.objects.all()
-        return render(response, "vending/createSnack.html", {"snacks": stock})
+# creates snacks in stock page
+def create_snack(response):
     if response.method == "POST":
-        form = CreateSnack(response.POST)
-        if form.is_valid():
-            name = form.cleaned_data["name"]
-            price = form.cleaned_data["price"]
-            quantity = form.cleaned_data["quantity"]
-            if snacks.filter(name=name).count() == 0:
-                new_snack = Snacks(name=name, price=price, totalQuantity=quantity, availableQuantity=quantity)
-                new_snack.save()
-                return HttpResponseRedirect("/")
-        return HttpResponseRedirect("")
-    else:
-        form = CreateSnack()
-    return render(response, "vending/createSnack.html", {"form": form})
+        name = response.POST.get("snackName")
+        if snacks.filter(name=name).count() != 0:
+            return render(response, "vending/stock.html", {"snacks": snacks})
+        price = response.POST.get("snackPrice")
+        quantity = response.POST.get("snackQty")
+        new_snack = Snacks(name=name, price=price, totalQuantity=quantity, availableQuantity=quantity)
+        new_snack.save()
+        return stock(response)
+    return stock(response)
 
 
-def stock(response):
-    if response.method == "GET":
-        stock = Snacks.objects.all()
-        return render(response, "vending/stock.html", {"snacks": stock})
-    if response.method == "POST":
-        if response.POST.get("createSnack"):
-            name = response.POST.get("snackName")
-            if snacks.filter(name=name).count() != 0:
-                return render(response, "vending/stock.html", {"snacks": snacks})
-            price = response.POST.get("snackPrice")
-            quantity = response.POST.get("snackQty")
-            new_snack = Snacks(name=name, price=price, totalQuantity=quantity, availableQuantity=quantity)
-            new_snack.save()
-            new_snacks = Snacks.objects.all()
-            return render(response, "vending/stock.html", {"snacks": new_snacks})
-        elif response.POST.get("editSnack"):
-            name = response.POST.get("snackName")
-            if snacks.filter(name=name).count() != 0:
-                snack = snacks.get(name=name)
-                price = response.POST.get("snackPrice")
-                if price != "":
-                    snack.price = price
-                quantity = response.POST.get("snackQty")
-                if quantity != "":
-                    pass
-                snack.totalQuantity = response.POST.get("snackQty")
-                snack.availableQuantity = response.POST.get("snackQty")
-                snack.save()
-                new_snacks = Snacks.objects.all()
-                return render(response, "vending/stock.html", {"snacks": new_snacks})
-                snack.save()
-    return render(response, "vending/stock.html", {"snacks": snacks})
+# ==================================Delete apis===============================
 
-
-# delete button on stock page
-def deleteSnack(request, snackId):
+# This deletes snacks from stock
+def delete_stock(request, snackId):
     snack = Snacks.objects.get(id=snackId)
     snack.delete()
     return stock(request)
 
 
-def deleteVM(request, vmID):
+def delete_vm(request, vmID):
     print("deleting vm")
     vm = VendingMachine.objects.get(id=vmID)
     vm.delete()
     return HttpResponseRedirect("/")
 
+# This deletes snacks from vending machine
+def delete_snack(request, vm_id, snack_id):
+    snack = Snacks.objects.get(id=snack_id)
+    vm = VendingMachine.objects.get(id=vm_id)
+    stock = Stock.objects.filter(vendingMachine=vm).get(snacks=snack)
+    snack.availableQuantity += stock.stock
+    snack.save()
+    stock.delete()
+    return HttpResponseRedirect("/%s" % vm.location)
+
+
+# ==================================Update apis===============================
 
 # purchase button on vending machine page
-def purchaseSnack(request, vmID, snackId):
+def purchase_snack(response, vmID, snackId):
     vm = VendingMachine.objects.get(id=vmID)
     snack = Snacks.objects.get(id=snackId)
-    purchasedStock = Stock.objects.filter(vendingMachine=vm).get(snacks=snack)
-    purchasedStock.stock -= 1
+    purchased_stock = Stock.objects.filter(vendingMachine=vm).get(snacks=snack)
+    purchased_stock.stock -= 1
     snack.totalQuantity -= 1
     snack.availableQuantity -= 1
-    purchasedStock.save()
+    purchased_stock.save()
     snack.save()
+    vm.save()
     return HttpResponseRedirect("/%s" % vm.location)
+
+
+# add snacks to vending machine
+def add_snack_to_vm(response, vm_id):
+    vm = VendingMachine.objects.get(id=vm_id)
+    snack_name = response.POST.get("snackName")
+    if snacks.filter(name=snack_name).count() != 0:
+        snack = snacks.get(name=snack_name)
+        qty = response.POST.get("snackQty")
+        print(qty)
+        if int(snack.availableQuantity) >= int(qty):
+            new_stock = Stock(vendingMachine=vm, snacks=snack, stock=qty)
+            snack.availableQuantity -= int(qty)
+            new_stock.save()
+            snack.save()
+            vm.save()
+            return vending_machine(response, vm.location)
+    return vending_machine(response, vm.location)
+
+
+# edit stock on vending machine page
+def edit_stock_vm(response, vm_id):
+    vm = VendingMachine.objects.get(id=vm_id)
+    snack_name = response.POST.get("snackName")
+    stock = Stock.objects.filter(vendingMachine=vm)
+    if snacks.filter(name=snack_name).count() != 0 and stock.filter(snacks=snacks.get(name=snack_name)).count() != 0:
+        snack = snacks.get(name=snack_name)
+        qty = response.POST.get("snackQty")
+        if int(snack.availableQuantity) >= int(qty):
+            snack.availableQuantity = int(snack.availableQuantity) - int(qty)
+            changed_stock = stock.get(snacks=snack)
+            changed_stock.stock += int(qty)
+            snack.save()
+            changed_stock.save()
+            vm.save()
+            return vending_machine(response, vm.location)
+    return vending_machine(response, vm.location)
+
+
+
+
+# editing stock on stock page
+def edit_stock(response):
+    if response.method == "POST":
+        snack_name = response.POST.get("snackName")
+        snack_price = response.POST.get("snackPrice")
+        snack_quantity = response.POST.get("editStock")
+        if snacks.filter(name=snack_name).count() != 0:
+            snack = snacks.get(name=snack_name)
+            if snack_price != "":
+                snack.price = snack_price
+            if snack_quantity != "":
+                snack.totalQuantity = int(snack.totalQuantity) + int(snack_quantity)
+                snack.availableQuantity = int(snack.availableQuantity) + int(snack_quantity)
+            snack.save()
+            # return stock(response)
+            return render(response, "vending/stock.html", {"snacks": snacks})
+    return stock(response)

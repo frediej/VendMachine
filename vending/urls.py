@@ -4,12 +4,16 @@ from . import views
 urlpatterns = [
     # path("", views.index, name="index"), #calls index by default in views.py
     path("", views.home, name="home"),
-    path("<str:loc>", views.index, name="index"),
-    path("createVM/", views.createVM, name="create"),
-    path("createSnack/", views.createSnack, name="createSnack"),
+    path("<str:loc>", views.vending_machine, name="index"),
+    path("createVM/", views.create_vm, name="create"),
+    path("create_snack/", views.create_snack, name="createSnack"),
     path("stock/", views.stock, name="stock"),
-    path("deleteSnack/<int:snackId>", views.deleteSnack, name="deleteSnack"),
-    path("deleteVM/<int:vmID>", views.deleteVM, name="deleteVM"),
-    path("purchaseSnack/<int:vmID>/<int:snackId>/", views.purchaseSnack, name="purchaseSnack"),
+    path("deleteStock/<int:snackId>", views.delete_stock, name="deleteSnack"),
+    path("deleteVM/<int:vm_id>", views.delete_vm, name="deleteVM"),
+    path("purchaseSnack/<int:vm_id>/<int:snackId>/", views.purchase_snack, name="purchaseSnack"),
+    path("deleteSnack/{{ vm.id }}/{{ item.snacks.id }}", views.delete_snack, name="deleteSnack"),
+    path("edit_stock/", views.edit_stock, name="editStock"),
+    path("add_snack_to_vm/<int:vm_id>", views.add_snack_to_vm, name="addSnackToVM"),
+    path("edit_stock_vm/<int:vm_id>", views.edit_stock_vm, name="editStockVM"),
 
 ]
