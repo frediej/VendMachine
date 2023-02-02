@@ -1,12 +1,13 @@
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hw1.settings")
 
 import django
+from django.test import TestCase
+
+from .models import Snacks, Stock, VendingMachine
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hw1.settings")
 django.setup()
 
-
-from django.test import TestCase
-from .models import VendingMachine, Snacks, Stock
 
 # Create your tests here.
 
@@ -38,7 +39,8 @@ class SnackTestCase(TestCase):
             availableQuantity=SNACK_AVAILABLE_QUANTITY,
         )
         snackie.save()
-#
+
+    #
     def test_snack_creation(self):
         snackie = Snacks.objects.get(name=SNACK_NAME)
         self.assertTrue(snackie.name == SNACK_NAME)
@@ -61,12 +63,9 @@ class StockTestCase(TestCase):
             availableQuantity=SNACK_AVAILABLE_QUANTITY,
         )
         snackie.save()
-        stockie = Stock.objects.create(
-            vendingMachine=vm, snacks=snackie, stock=STOCK
-        )
+        stockie = Stock.objects.create(vendingMachine=vm, snacks=snackie, stock=STOCK)
         stockie.save()
 
     def test_stock_creation(self):
         stockie = Stock.objects.get(snacks__name=SNACK_NAME)
         self.assertTrue(stockie.stock == STOCK)
-
