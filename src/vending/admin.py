@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import VendingMachine, Snacks, Stock
+
+from .models import Snacks, Stock, VendingMachine
 
 # Register your models here.
 admin.site.register(VendingMachine)
